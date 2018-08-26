@@ -33,17 +33,38 @@ const addKeyboardEvents = notes => {
 }
 
 const addTapEvents = notes => {
+  let mouseIsDown = false
+  let lastKeyPlayed = null
+
+  window.addEventListener('mousedown', e => {
+    mouseIsDown = true
+  })
+  window.addEventListener('mouseup', e => {
+    mouseIsDown = false
+  })
+
   document.querySelectorAll('[data-key]').forEach(key => {
+    const note = key.getAttribute('data-note')
+
     let handler = e => {
-      const note = key.getAttribute('data-note')
       socket.emit('played note', note)
       notes[note].play()
+      lastKeyPlayed = note
+    }
+
+    let handlerMouseMove = e => {
+      if (!mouseIsDown || lastKeyPlayed === note) {
+        return false
+      }
+
+      handler(e)
     }
 
     if (isTouchDevice()) {
       key.addEventListener('touchstart', handler)
     } else {
       key.addEventListener('mousedown', handler)
+      key.addEventListener('mousemove', handlerMouseMove)
     }
   })
 }
