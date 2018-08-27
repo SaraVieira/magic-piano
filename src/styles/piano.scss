@@ -6,6 +6,7 @@
   user-select: none;
   -webkit-user-drag: none;
   user-drag: none;
+  cursor: pointer;
 
   @media screen and (min-height: $screen-xs) {
     height: $piano-height;

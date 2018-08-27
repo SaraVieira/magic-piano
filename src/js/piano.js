@@ -3,6 +3,12 @@ import notes from './notes'
 import isTouchDevice from './touch'
 
 const socket = io()
+var mySocket;
+var currentRoom = 'main'
+
+socket.on('connect', () => {
+  socket.emit('room',currentRoom)
+})
 
 socket.on('played', key => {
   const $key = document.querySelector(`[data-note='${key}']`) || ''
@@ -17,6 +23,31 @@ socket.on('users', count => {
   const title = c => (c === 1 ? 'person' : 'people')
   element.innerHTML = `${pre(count)} ${count} ${title(count)}`
 })
+
+const changeRoom = (newRoom) => {
+  console.log('Leaving ', currentRoom)
+  var $btn = document.querySelector(`[data-room='${currentRoom}']`) || ''
+  if ($btn) {
+    $btn.classList.remove('active')
+  }
+  currentRoom = newRoom;
+  socket.emit('room',newRoom)
+  console.log('Joining ', newRoom)
+  $btn = document.querySelector(`[data-room='${newRoom}']`) || ''
+  if ($btn) {
+    $btn.classList.add('active')
+  }
+}
+
+const setRoomButtons = function() {
+  document.querySelectorAll('[data-room]').forEach(roomButton => {
+    const room = roomButton.getAttribute('data-room')
+    roomButton.addEventListener('click',() => changeRoom(room))
+  })
+  let customRoom = document.getElementById('customRoom')
+  customRoom.addEventListener('change',() => changeRoom(customRoom.value))
+  customRoom.addEventListener('blur',() => changeRoom(customRoom.value))
+}
 
 const addKeyboardEvents = notes => {
   window.addEventListener('keydown', e => {
@@ -75,4 +106,5 @@ const addTapEvents = notes => {
 export default piano => {
   addKeyboardEvents(notes)
   addTapEvents(notes)
+  setRoomButtons()
 }

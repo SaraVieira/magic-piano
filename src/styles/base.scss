@@ -36,19 +36,53 @@ body {
 }
 
 .title,
+.channel,
 .users {
   font-family: 'Comfortaa', cursive;
   color: white;
   margin: 20px 0;
-  margin-bottom: 80px;
+  margin-bottom: 10px;
   text-align: center;
   font-size: 40px;
 }
 
+.channel,
 .users {
   font-size: 30px;
   margin-bottom: 20px;
   margin-top: 40px;
+}
+
+.channel .input {
+  max-width: 130pt;
+
+}
+
+.channel .small {
+  font-size: 12pt;
+  font-style: italic;
+}
+
+.channel {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.channel .row {
+
+}
+
+.button
+{
+  background-color: black;
+  padding: 10px;
+  border: 1px solid #243b55;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button.active {
+  background-color: #192235;
 }
 
 a {

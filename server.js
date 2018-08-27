@@ -14,14 +14,32 @@ app.get('/', function(req, res) {
 })
 
 io.on('connection', socket => {
+  // Handle user counts
   users++
   socket.on('disconnect', () => {
     users--
     io.emit('users', users)
   })
   io.emit('users', users)
+  
+  // Handle incoming messages
+  // Someone played a note
   socket.on('played note', key => {
-    socket.broadcast.emit('played', key)
+    // send it just to their room
+    if (socket.room) {
+      socket.broadcast.to(socket.room).emit('played', key)
+    } else { // fallback, shouldn't ever get here
+      socket.broadcast.emit('played', key)
+    }
+  })
+
+  // User wants to change rooms
+  socket.on('room', room => {
+    if (socket.room) {
+      socket.leave(socket.room)
+    }
+    socket.room = room
+    socket.join(room)
   })
 })
 
