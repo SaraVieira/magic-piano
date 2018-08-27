@@ -13,8 +13,9 @@ socket.on('played', key => {
 
 socket.on('users', count => {
   const element = document.getElementById('users')
+  const pre = c => (c === 1 ? 'is' : 'are')
   const title = c => (c === 1 ? 'person' : 'people')
-  element.innerHTML = `${count} ${title(count)}`
+  element.innerHTML = `${pre(count)} ${count} ${title(count)}`
 })
 
 const addKeyboardEvents = notes => {
