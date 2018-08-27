@@ -21,7 +21,7 @@ io.on('connection', socket => {
   })
   io.emit('users', users)
   socket.on('played note', key => {
-    io.emit('played', key)
+    socket.broadcast.emit('played', key)
   })
 })
 
