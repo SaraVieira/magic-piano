@@ -6,9 +6,9 @@ const socket = io()
 
 socket.on('played', key => {
   const $key = document.querySelector(`[data-note='${key}']`) || ''
+  notes[key].play()
   $key.classList.add('active')
   setTimeout(() => $key.classList.remove('active'), 100)
-  notes[key].play()
 })
 
 socket.on('users', count => {
@@ -51,6 +51,8 @@ const addTapEvents = notes => {
       socket.emit('played note', note)
       notes[note].play()
       lastKeyPlayed = note
+      key.classList.add('active')
+      setTimeout(() => key.classList.remove('active'), 100)
     }
 
     let handlerMouseMove = e => {
