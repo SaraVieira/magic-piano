@@ -23,6 +23,14 @@ socket.on('users', count => {
   element.innerHTML = `${pre(count)} ${count} ${title(count)}`
 })
 
+
+socket.on('roomusers', count => {
+  const element = document.getElementById('roomusers')
+  const pre = c => (c === 1 ? 'is' : 'are')
+  const title = c => (c === 1 ? 'person' : 'people')
+  element.innerHTML = `${count} ${title(count)}`
+})
+
 const changeRoom = (newRoom) => {
   var $btn = document.querySelector(`[data-room='${currentRoom}']`) || ''
   if ($btn) {
