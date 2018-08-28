@@ -29,6 +29,19 @@
 <body>
   <section class="header">
     <h1 class="title">Play the piano with the world 🌎</h1>
+    <div class="channel row">
+      <p>
+      <span class="channel text">Pick a room: </span><br />
+      <button class="channel button active" data-room="main">Main Room</button>
+      <button class="channel button" data-room="classical">Classical</button>
+      <button class="channel button" data-room="pop">Pop</button>
+      <button class="channel button" data-room="jazz">Jazz</button>
+      <button class="channel button" data-room="ambient">Ambient</button>
+      <button class="channel button" data-room="improv">Improv</button>
+      <input type="text" id="customRoom" class="channel button input" placeholder="Custom"><br />
+      <span class="channel text small">For a private jam session, type a unique name in the "Custom" box and hit "Enter" for it to take affect.<br /> Your friends will need to use this same room name.</span>
+      </p>
+    </div>
     <div class="piano">
       <div class="piano-key">
         <div class="piano-key__white" data-key="20" data-note="1C"></div>
