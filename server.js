@@ -4,7 +4,7 @@ const app = express()
 var http = require('http').Server(app)
 var io = require('socket.io')(http)
 
-var users = 0
+var users = { total: 0 }
 const DIST_DIR = path.join(__dirname, 'dist')
 
 app.use(express.static(DIST_DIR))
@@ -15,12 +15,12 @@ app.get('/', function(req, res) {
 
 io.on('connection', socket => {
   // Handle user counts
-  users++
+  users.total++
   socket.on('disconnect', () => {
-    users--
-    io.emit('users', users)
+    users.total--
+    io.emit('users', users.total)
   })
-  io.emit('users', users)
+  io.emit('users', users.total)
   
   // Handle incoming messages
   // Someone played a note
@@ -37,9 +37,18 @@ io.on('connection', socket => {
   socket.on('room', room => {
     if (socket.room) {
       socket.leave(socket.room)
+      if (!users[socket.room]) { users[socket.room] = 0 }
+      users[socket.room]-- 
+      io.to(socket.room).emit('roomusers', users[socket.room])
     }
     socket.room = room
     socket.join(room)
+
+    if (!users[socket.room]) { users[socket.room] = 0 }
+    if (users[socket.room] < users.total) {
+      users[socket.room]++ 
+    }
+    io.to(socket.room).emit('roomusers', users[socket.room])
   })
 })
 
