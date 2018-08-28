@@ -15,12 +15,20 @@ app.get('/', function(req, res) {
 
 io.on('connection', socket => {
   // Handle user counts
+<<<<<<< HEAD
   users.total++
+=======
+  users++
+>>>>>>> ec90510da04d586aebb69b0ddc8ea0745c358ceb
   socket.on('disconnect', () => {
     users.total--
     io.emit('users', users.total)
   })
+<<<<<<< HEAD
   io.emit('users', users.total)
+=======
+  io.emit('users', users)
+>>>>>>> ec90510da04d586aebb69b0ddc8ea0745c358ceb
   
   // Handle incoming messages
   // Someone played a note
@@ -37,6 +45,7 @@ io.on('connection', socket => {
   socket.on('room', room => {
     if (socket.room) {
       socket.leave(socket.room)
+<<<<<<< HEAD
       if (!users[socket.room]) { users[socket.room] = 0 }
       users[socket.room]-- 
       io.to(socket.room).emit('roomusers', users[socket.room])
@@ -49,6 +58,11 @@ io.on('connection', socket => {
       users[socket.room]++ 
     }
     io.to(socket.room).emit('roomusers', users[socket.room])
+=======
+    }
+    socket.room = room
+    socket.join(room)
+>>>>>>> ec90510da04d586aebb69b0ddc8ea0745c358ceb
   })
 })
 
